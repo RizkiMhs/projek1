@@ -54,7 +54,7 @@ const checkoutBtn = document.querySelector("#checkout-btn");
 checkoutBtn.disabled = true;
 
 const form = document.querySelector("#checkoutForm");
-form.addEventListener('keyup', function () {
+form.addEventListener("keyup", function () {
   //  for(let i = 0; i < form.elements.length; i++){
   //    if(form.elements[i].value.length !== 0){
   //      checkoutBtn.classList.remove('disabled');
@@ -89,25 +89,25 @@ form.addEventListener('keyup', function () {
 });
 
 // kirim data ketika checkout di klik
-checkoutBtn.addEventListener("click", function (e) {
+checkoutBtn.addEventListener("click", async function (e) {
   e.preventDefault();
   const formData = new FormData(form);
   const data = new URLSearchParams(formData);
   const objData = Object.fromEntries(data);
-  const pesan = message(objData);
-  window.open("http://wa.me/6282352306497?text=" + encodeURIComponent(pesan));
+  // const pesan = message(objData);
+  // window.open("http://wa.me/6282352306497?text=" + encodeURIComponent(pesan));
   // minta transaksi token menggunakan ajax atau fetch
-  // try {
-  //   const response = await fetch("php/placeOrder.php", {
-  //     method: "POST",
-  //     body: data,
-  //   });
-  //   const token = await response.text();
-  //   console.log(token);
-  //   // window.snap.pay('TRANSACTION_TOKEN_HERE');
-  // } catch (err) {
-  //   console.log(err.message);
-  // }
+  try {
+    const response = await fetch("php/placeOrder.php", {
+      method: "POST",
+      body: data,
+    });
+    const token = await response.text();
+    // console.log(token);
+    window.snap.pay(token);
+  } catch (err) {
+    console.log(err.message);
+  }
 });
 
 // format pesan whatsapp
